@@ -1,0 +1,7 @@
+Provider ID,Provider Name,Credential Type,National Identifier,License Expiry,Locations
+P1001,Jordan Lee,Clinician,1669000101,2027-08-31,West; East
+P1002,Casey Morgan,Clinician,1669000102,2027-01-31,West
+P1003,Taylor Rivera,Clinician,1669000103,2028-03-31,East
+P1004,Avery Chen,Clinician,1669000104,2027-11-30,West; East
+P1005,Riley Patel,Clinician,1669000105,2027-02-15,East
+P1006,Morgan Blake,Clinician,,2028-06-30,East

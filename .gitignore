@@ -1,0 +1,15 @@
+# dependencies & builds
+node_modules/
+dist/
+
+# secrets — never commit (holds the MongoDB Atlas connection string)
+.env
+.env.*
+!.env.example
+
+# local embedded MongoDB data
+.mongo-data/
+
+# OS / editor
+.DS_Store
+*.log
