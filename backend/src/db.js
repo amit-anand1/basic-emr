@@ -24,7 +24,8 @@ export async function connectDb() {
     console.log(`[db] embedded MongoDB running at ${uri} (data in ${dbPath})`);
   }
   await mongoose.connect(uri);
-  console.log('[db] connected');
+  const c = mongoose.connection;
+  console.log(`[db] connected to ${embedded ? 'EMBEDDED local MongoDB' : 'MONGO_URI'} host=${c.host} database=${c.name}`);
 }
 
 export async function disconnectDb() {

@@ -1,3 +1,6 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -17,7 +20,12 @@ export function createApp() {
   app.use(express.json({ limit: '25mb' }));
   if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'));
 
-  app.get('/api/health', (req, res) => res.json({ ok: true, db: mongoose.connection.readyState === 1 }));
+  app.get('/api/health', (req, res) => res.json({
+    ok: true,
+    db: mongoose.connection.readyState === 1,
+    dbHost: mongoose.connection.host,
+    dbName: mongoose.connection.name,
+  }));
   app.get('/api/templates', (req, res) => res.json(TEMPLATES));
   app.get('/api/schema', (req, res) => res.json({ environmentStatuses: ENV_STATUSES, entities: describeEntities() }));
 
@@ -33,6 +41,14 @@ export function createApp() {
   app.use('/api/environments/:envId', loadEnv, envScoped);
 
   app.use('/api', (req, res) => res.status(404).json({ error: `No route for ${req.method} ${req.originalUrl}` }));
+
+  // Production: serve the built React app (frontend/dist) from the same server,
+  // so the whole EMR runs on one URL. In development Vite serves the frontend instead.
+  const dist = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../frontend/dist');
+  if (fs.existsSync(path.join(dist, 'index.html'))) {
+    app.use(express.static(dist));
+    app.get('/{*splat}', (req, res) => res.sendFile(path.join(dist, 'index.html')));
+  }
 
   // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {

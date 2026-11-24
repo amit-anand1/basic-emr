@@ -16,5 +16,10 @@
     "mongodb-memory-server": "^10.1.4",
     "mongoose": "^8.9.5",
     "morgan": "^1.10.0"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "disablePostinstall": "1"
+    }
   }
 }
